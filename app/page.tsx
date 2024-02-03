@@ -14,17 +14,11 @@ export default function Home() {
  console.log(data)
 
  return (
-  <main className='flex min-h-screen flex-col items-center p-24'>
-   <h1>Hello</h1>
+  <main className='bg-[#1b2741] flex min-h-screen flex-col items-center p-24 gap-4'>
    <Dropzone
     setResults={setResults}
     setFileName={setFileName}
    />
-   {/* <ul>
-    {data.map((item, index) => (
-     <li key={index}>{item && item['Publish time'] && Date.parse(item['Publish time'])}</li>
-    ))}
-   </ul> */}
    <Graph data={data} />
   </main>
  )
