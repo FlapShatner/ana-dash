@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --fg-hsl: 215, 18%, 13%;
+  --bg-hsl: 34, 100%, 97%;
+  --fg: hsl(34, 100%, 97%);
+  --bg: hsl(215, 18%, 13%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg-hsl: 34, 100%, 97%;
+    --bg-hsl: 215, 18%, 13%;
+  }
+}
+
+body {
+  color: hsl(var(--fg-hsl));
+  background: hsl(var(--bg-hsl));
+}
