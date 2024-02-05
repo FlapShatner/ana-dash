@@ -10,5 +10,5 @@ Ability to add multiple kpis to the same line graph for comparison
 
 Option for graph type depends on whether multiple dates are selected or not
 
-
+Clicking datapoint opens details about specific KPI event
 

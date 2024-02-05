@@ -37,3 +37,16 @@ export function getDataPoint(data: dataObjectType) {
   shares: data.Shares,
  }
 }
+
+export const getFormattedData = (data: dataObjectType[]) => {
+ const dataArr = data.map((item) => {
+  return getDataPoint(item)
+ })
+ const sortedData = dataArr.sort((a, b) => {
+  return Date.parse(a.publishTime) - Date.parse(b.publishTime)
+ })
+
+ return sortedData
+}
+
+export type dataPointType = ReturnType<typeof getDataPoint>

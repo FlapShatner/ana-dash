@@ -3,11 +3,14 @@ import { useState, useEffect } from 'react'
 import DeleteIcon from './icons/delete-icon'
 import { useCSVReader, formatFileSize } from 'react-papaparse'
 import { cn } from '@/utils'
+import { useAtom } from 'jotai'
+import { inputDataAtom } from '@/atoms'
 
-export default function CSVReader({ setResults, setFileName }: any) {
+export default function CSVReader({ setFileName }: any) {
  const { CSVReader } = useCSVReader()
  const [zoneHover, setZoneHover] = useState(false)
  const [showResults, setShowResults] = useState(false)
+ const [inputData, setInputData] = useAtom(inputDataAtom)
 
  const config = {
   header: true,
@@ -17,7 +20,7 @@ export default function CSVReader({ setResults, setFileName }: any) {
 
  const handleRemove = (e: any) => {
   e.stopPropagation()
-  setResults(null)
+  setInputData(null)
   setFileName(null)
   setShowResults(false)
  }
@@ -27,7 +30,7 @@ export default function CSVReader({ setResults, setFileName }: any) {
    config={config}
    onUploadAccepted={(results: any, file: any) => {
     setShowResults(true)
-    setResults(results)
+    setInputData(results)
     setZoneHover(false)
     setFileName(file.name)
    }}
