@@ -5,6 +5,7 @@ import { useCSVReader, formatFileSize } from 'react-papaparse'
 import { cn } from '@/utils'
 import { useAtom } from 'jotai'
 import { inputDataAtom } from '@/atoms'
+import { Idata } from '@/types'
 
 export default function CSVReader({ setFileName }: any) {
  const { CSVReader } = useCSVReader()
@@ -20,7 +21,7 @@ export default function CSVReader({ setFileName }: any) {
 
  const handleRemove = (e: any) => {
   e.stopPropagation()
-  setInputData(null)
+  setInputData({} as Idata)
   setFileName(null)
   setShowResults(false)
  }
