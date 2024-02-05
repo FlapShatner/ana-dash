@@ -1,0 +1,14 @@
+When user uploads csv, it is parsed and sent to database.
+
+Date range selector: 
+Debounce input so API call is only made when selection is finished.
+Pull data associated with the selected dates from DB and cached
+
+Multiple graphs with options to select which kpi to display for which dates
+
+Ability to add multiple kpis to the same line graph for comparison
+
+Option for graph type depends on whether multiple dates are selected or not
+
+
+
