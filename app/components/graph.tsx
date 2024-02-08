@@ -1,11 +1,12 @@
 import { FC, use, useEffect, useState } from 'react'
 import Dates from './dates'
 import CustomTooltip from './customToolTip'
+import Tabs from './tabs'
 import { Card, LineChart, Title, Color, Flex, Icon, Tab, TabGroup, TabList, Text, ValueFormatter, DateRangePickerValue } from '@tremor/react'
 import { dataPointType, getDataPoint, getFormattedData } from '@/utils'
 import { lastWeekDate, dateLabel, filterByDateRange } from '@/dateUtils'
 import { useAtom } from 'jotai'
-import { rangeAtom, inputDataAtom, sortedDataAtom } from '@/atoms'
+import { rangeAtom, inputDataAtom, sortedDataAtom, selectedIndexAtom } from '@/atoms'
 import { Idata, dataObjectType } from '@/types'
 
 interface GraphProps {}
@@ -37,16 +38,14 @@ const Graph: FC<GraphProps> = () => {
 
  const Kpis = {
   Reach: 'Reach',
-  Comments: 'Comments',
+
   Impressions: 'Impressions',
   Follows: 'Follows',
   Likes: 'Likes',
-  Shares: 'Shares',
  }
 
  const kpiList = Object.keys(Kpis)
-
- const [selectedIndex, setSelectedIndex] = useState(0)
+ const [selectedIndex, setSelectedIndex] = useAtom(selectedIndexAtom)
  const selectedKpi = kpiList[selectedIndex]
 
  const chartArgs = {
@@ -57,24 +56,12 @@ const Graph: FC<GraphProps> = () => {
  }
 
  return (
-  <Card className='h-[60vh]'>
-   <div className='flex justify-between'>
+  <Card className='h-[80vh] sm:h-[60vh]'>
+   <div className='flex flex-col lg:flex-row justify-between'>
     <Title>KPIs Over Time</Title>
     <div>
      <Dates />
-     <TabGroup
-      index={selectedIndex}
-      onIndexChange={setSelectedIndex}>
-      <TabList
-       color='gray'
-       variant='solid'>
-       {kpiList.map((kpi, index) => (
-        <Tab key={index}>
-         <Text>{kpi}</Text>
-        </Tab>
-       ))}
-      </TabList>
-     </TabGroup>
+     <Tabs kpiList={kpiList} />
     </div>
    </div>
    <LineChart {...chartArgs} />

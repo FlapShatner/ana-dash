@@ -1,5 +1,6 @@
 ## TODO
 
+- show all data in graph before range is selected
 - put file in localstorage
 - clicking datapoint shows detail
 - style dropzone file display

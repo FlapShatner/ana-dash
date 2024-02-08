@@ -50,3 +50,11 @@ export const getFormattedData = (data: dataObjectType[]) => {
 }
 
 export type dataPointType = ReturnType<typeof getDataPoint>
+
+export const groupArrayByThree = (arr: dataPointType[]) => {
+ const result = []
+ for (let i = 0; i < arr.length; i += 3) {
+  result.push(arr.slice(i, i + 3))
+ }
+ return result
+}
