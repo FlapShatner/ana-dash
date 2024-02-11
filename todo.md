@@ -5,8 +5,10 @@
 - display currently compared files
 - allow user to remove files
 - put files in localstorage
-- clicking datapoint shows detail
-- style dropzone file display
-- style datapoint detail card
-- show multiple files in same line graph
+- merge data from multiple files
+- add date second date range
+- sum kpi for each range
+- compare 2 ranges
+- show each kpi in separate card
+- allow focus card
 - ~~show all data in graph before range is selected~~

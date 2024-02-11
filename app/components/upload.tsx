@@ -3,12 +3,17 @@ import { useCSVReader } from 'react-papaparse'
 import { PlusIcon } from '@heroicons/react/20/solid'
 import { Button } from '@tremor/react'
 import { useAtom, useSetAtom } from 'jotai'
-import { inputDataAtom } from '@/atoms'
-interface UploadProps {}
+import { startInputAtom, endInputAtom, startNameAtom, endNameAtom } from '@/atoms'
+interface UploadProps {
+ isEnd: boolean
+}
 
-const Upload: FC<UploadProps> = () => {
+const Upload: FC<UploadProps> = ({ isEnd }) => {
  const { CSVReader } = useCSVReader()
- const setInputData = useSetAtom(inputDataAtom)
+ const setStartInput = useSetAtom(startInputAtom)
+ const setEndInput = useSetAtom(endInputAtom)
+ const setStartName = useSetAtom(startNameAtom)
+ const setEndName = useSetAtom(endNameAtom)
 
  const config = {
   header: true,
@@ -20,7 +25,8 @@ const Upload: FC<UploadProps> = () => {
   <CSVReader
    config={config}
    onUploadAccepted={(results: any, file: any) => {
-    setInputData(results)
+    isEnd ? setEndInput(results) : setStartInput(results)
+    isEnd ? setEndName(file.name) : setStartName(file.name)
    }}>
    {({ getRootProps, acceptedFile, ProgressBar, getRemoveFileProps }: any) => (
     <>
@@ -29,7 +35,7 @@ const Upload: FC<UploadProps> = () => {
        icon={PlusIcon}
        variant='secondary'
        {...getRootProps()}>
-       Add CSV
+       Add {isEnd ? 'Ending' : 'Starting'} CSV
       </Button>
      </div>
      <ProgressBar />
