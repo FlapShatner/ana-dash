@@ -1,26 +1,28 @@
-import { FC, use, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import Dates from './dates'
 import CustomTooltip from './customToolTip'
 import Tabs from './tabs'
-import { Card, LineChart, Title, Color, Flex, Icon, Tab, TabGroup, TabList, Text, ValueFormatter, DateRangePickerValue } from '@tremor/react'
-import { dataPointType, getDataPoint, getFormattedData } from '@/utils'
-import { lastWeekDate, dateLabel, filterByDateRange } from '@/dateUtils'
-import { useAtom } from 'jotai'
+import { Card, LineChart } from '@tremor/react'
+import { getFormattedData } from '@/utils'
+import { dateLabel, filterByDateRange } from '@/dateUtils'
+import { useAtom, useAtomValue } from 'jotai'
 import { rangeAtom, inputDataAtom, sortedDataAtom, selectedIndexAtom } from '@/atoms'
-import { Idata, dataObjectType } from '@/types'
+import { dataObjectType } from '@/types'
+import Change from './change'
 
 interface GraphProps {}
 
 const Graph: FC<GraphProps> = () => {
- const [inputData, setInputData] = useAtom(inputDataAtom)
- const [range, setRange] = useAtom(rangeAtom)
+ const inputData = useAtomValue(inputDataAtom)
+ const range = useAtomValue(rangeAtom)
  const [sortedData, setSortedData] = useAtom(sortedDataAtom)
 
  useEffect(() => {
   const data: dataObjectType[] = inputData?.data || []
   setSortedData(getFormattedData(data))
  }, [inputData])
- //  const sortedData = getFormattedData(data)
+
+ console.log('sortedData', sortedData)
 
  const filtered = filterByDateRange(sortedData, (range as { from?: Date }).from || new Date(), (range as { to?: Date }).to || new Date())
 
@@ -38,7 +40,6 @@ const Graph: FC<GraphProps> = () => {
 
  const Kpis = {
   Reach: 'Reach',
-
   Impressions: 'Impressions',
   Follows: 'Follows',
   Likes: 'Likes',
@@ -56,14 +57,17 @@ const Graph: FC<GraphProps> = () => {
  }
 
  return (
-  <Card className='h-[80vh] sm:h-[60vh]'>
-   <div className='flex flex-col lg:flex-row justify-between'>
-    <Title>KPIs Over Time</Title>
+  <Card>
+   <div className='flex flex-col items-end mb-2'>
     <div>
      <Dates />
      <Tabs kpiList={kpiList} />
     </div>
    </div>
+   <Change
+    data={graphData}
+    selectedKpi={selectedKpi}
+   />
    <LineChart {...chartArgs} />
   </Card>
  )

@@ -1,10 +1,12 @@
 ## TODO
 
-- show all data in graph before range is selected
-- put file in localstorage
+- allow multiple files to be uploaded
+- list of currently loaded files
+- display currently compared files
+- allow user to remove files
+- put files in localstorage
 - clicking datapoint shows detail
 - style dropzone file display
 - style datapoint detail card
-- allow multiple files to be uploaded
-- display currently uploaded files
-- allow user to remove files
+- show multiple files in same line graph
+- ~~show all data in graph before range is selected~~
