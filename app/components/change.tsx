@@ -12,7 +12,7 @@ interface ChangeProps {
 }
 
 const Change: FC<ChangeProps> = ({ data, selectedKpi, prevData }) => {
- const [extraInfo, setExtraInfo] = useState(true)
+ const [extraInfo, setExtraInfo] = useState(false)
  const endRange = useAtomValue(endRangeAtom)
  const startRange = useAtomValue(startRangeAtom)
  const endInput = useAtomValue(endInputAtom)
@@ -54,7 +54,7 @@ const Change: FC<ChangeProps> = ({ data, selectedKpi, prevData }) => {
      {extraInfo && (
       <>
        <p className='text-dark-tremor-content-subtle mt-2'>from {prevSum}</p>
-       <p className='text-dark-tremor-content-subtle'> during {prevDate}</p>
+       <p className='text-dark-tremor-content-subtle'>{prevDate}</p>
       </>
      )}
      <button

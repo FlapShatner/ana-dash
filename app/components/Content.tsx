@@ -81,15 +81,30 @@ const Content: FC<ContentProps> = () => {
  return (
   <Card>
    <div className='flex flex-col items-end mb-2'>
-    <div>
-     <Tabs kpiList={kpiList} />
-    </div>
+    <div>{/* <Tabs kpiList={kpiList} /> */}</div>
    </div>
-   <Change
-    data={endGraphData}
-    prevData={startGraphData}
-    selectedKpi={selectedKpi}
-   />
+   <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+    <Change
+     data={endGraphData}
+     prevData={startGraphData}
+     selectedKpi={'Reach'}
+    />
+    <Change
+     data={endGraphData}
+     prevData={startGraphData}
+     selectedKpi={'Impressions'}
+    />
+    <Change
+     data={endGraphData}
+     prevData={startGraphData}
+     selectedKpi={'Follows'}
+    />
+    <Change
+     data={endGraphData}
+     prevData={startGraphData}
+     selectedKpi={'Likes'}
+    />
+   </div>
    {/* {startInput.length > 0 && <p> {prevDate}</p>} */}
   </Card>
  )
