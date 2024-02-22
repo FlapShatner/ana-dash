@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { DateRangePicker } from '@tremor/react'
 import { useAtom, useAtomValue } from 'jotai'
-import { endRangeAtom, sortedDataAtom, startRangeAtom } from '@/atoms'
+import { endRangeAtom, sortedDataAtom, startRangeAtom, endInputAtom, startInputAtom } from '@/atoms'
 
 type DatesProps = {
  isEnd: boolean
@@ -10,22 +10,25 @@ type DatesProps = {
 function Dates({ isEnd }: DatesProps) {
  const [endRange, setEndRange] = useAtom(endRangeAtom)
  const [startRange, setStartRange] = useAtom(startRangeAtom)
- const sortedData = useAtomValue(sortedDataAtom)
- const maxDate = new Date(sortedData[sortedData.length - 1]?.publishTime)
+ const endInput = useAtomValue(endInputAtom)
+ const startInput = useAtomValue(startInputAtom)
+ //  const sortedData = useAtomValue(sortedDataAtom)
+
+ const maxDate = isEnd ? new Date(endInput[endInput.length - 1]?.publishTime) : new Date(startInput[startInput.length - 1]?.publishTime)
 
  useEffect(() => {
   if (isEnd) {
    setEndRange({
-    from: sortedData.length > 0 ? new Date(sortedData[0]?.publishTime) : null,
-    to: sortedData.length > 0 ? new Date(sortedData[sortedData.length - 1]?.publishTime) : null,
+    from: endInput.length > 0 ? new Date(endInput[0]?.publishTime) : null,
+    to: endInput.length > 0 ? new Date(endInput[endInput.length - 1]?.publishTime) : null,
    })
   } else {
    setStartRange({
-    from: sortedData.length > 0 ? new Date(sortedData[0]?.publishTime) : null,
-    to: sortedData.length > 0 ? new Date(sortedData[sortedData.length - 1]?.publishTime) : null,
+    from: startInput.length > 0 ? new Date(startInput[0]?.publishTime) : null,
+    to: startInput.length > 0 ? new Date(startInput[startInput.length - 1]?.publishTime) : null,
    })
   }
- }, [sortedData])
+ }, [endInput, startInput])
 
  return (
   <div className='w-full flex mb-4 justify-end'>

@@ -5,18 +5,21 @@ import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/16/solid'
 
 interface ChangeProps {
  data: any
+ prevData: any
  selectedKpi: string
 }
 
-const Change: FC<ChangeProps> = ({ data, selectedKpi }) => {
+const Change: FC<ChangeProps> = ({ data, selectedKpi, prevData }) => {
  if (!data.length) return null
- const endValue = data[data.length - 1][selectedKpi]
- const startValue = data[0][selectedKpi]
- const change = endValue - startValue
- const changeLabel = Math.abs(change)
- const changePercentage = ((change / startValue) * 100).toFixed(1)
- const changeUp = change > 0
+ const prevSum = prevData.reduce((acc: number, item: any) => acc + item[selectedKpi], 0)
  const sum = data.reduce((acc: number, item: any) => acc + item[selectedKpi], 0)
+
+ //  const endValue = data[data.length - 1][selectedKpi]
+ //  const startValue = data[0][selectedKpi]
+ const change = sum - prevSum
+ const changeLabel = Math.abs(change)
+ const changePercentage = ((change / prevSum) * 100).toFixed(1)
+ const changeUp = change > 0
  return (
   <Card className='w-max px-8 pt-2 m-auto'>
    <h2 className='text-tremor-title text-tremor-content dark:text-dark-tremor-content'>{selectedKpi}</h2>

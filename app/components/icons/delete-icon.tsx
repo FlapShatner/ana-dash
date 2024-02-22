@@ -1,12 +1,13 @@
 import React from 'react'
 
-export default function DeleteIcon() {
+export default function DeleteIcon({ onClick }: { onClick: () => void }) {
  return (
   <svg
+   onClick={onClick}
    xmlns='http://www.w3.org/2000/svg'
    viewBox='0 0 16 16'
-   width='24px'
-   height='24px'
+   width='14px'
+   height='14px'
    baseProfile='basic'>
    <circle
     cx='8'

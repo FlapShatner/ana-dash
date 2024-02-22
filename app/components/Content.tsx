@@ -6,27 +6,30 @@ import { Card, LineChart } from '@tremor/react'
 import { getFormattedData } from '@/utils'
 import { dateLabel, filterByDateRange } from '@/dateUtils'
 import { useAtom, useAtomValue } from 'jotai'
-import { endRangeAtom, inputDataAtom, sortedDataAtom, selectedIndexAtom } from '@/atoms'
+import { startInputAtom, endInputAtom, selectedIndexAtom, endRangeAtom } from '@/atoms'
 import { dataObjectType } from '@/types'
 import Change from './change'
 
 interface ContentProps {}
 
 const Content: FC<ContentProps> = () => {
- const inputData = useAtomValue(inputDataAtom)
+ const startInput = useAtomValue(startInputAtom)
+ const endInput = useAtomValue(endInputAtom)
  const endRange = useAtomValue(endRangeAtom)
- const [sortedData, setSortedData] = useAtom(sortedDataAtom)
 
- useEffect(() => {
-  const data: dataObjectType[] = inputData?.data || []
-  setSortedData(getFormattedData(data))
- }, [inputData])
+ const startGraphData = startInput.map((item) => {
+  return {
+   Date: dateLabel(item.publishTime),
+   Reach: item.reach,
+   Comments: item.comments,
+   Impressions: item.impressions,
+   Follows: item.follows,
+   Likes: item.likes,
+   Shares: item.shares,
+  }
+ })
 
- console.log('sortedData', sortedData)
-
- const filtered = filterByDateRange(sortedData, (endRange as { from?: Date }).from || new Date(), (endRange as { to?: Date }).to || new Date())
-
- const graphData = filtered.map((item) => {
+ const endGraphData = endInput.map((item) => {
   return {
    Date: dateLabel(item.publishTime),
    Reach: item.reach,
@@ -49,12 +52,18 @@ const Content: FC<ContentProps> = () => {
  const [selectedIndex, setSelectedIndex] = useAtom(selectedIndexAtom)
  const selectedKpi = kpiList[selectedIndex]
 
- const chartArgs = {
-  data: graphData,
-  index: 'Date',
-  categories: [selectedKpi],
-  customTooltip: CustomTooltip,
- }
+ //  const chartArgs = {
+ //   data: graphData,
+ //   index: 'Date',
+ //   categories: [selectedKpi],
+ //   customTooltip: CustomTooltip,
+ //  }
+
+ const date = ` ${new Date((endRange as { from: string }).from).toLocaleDateString('en-us', {
+  year: '2-digit',
+  month: '2-digit',
+  day: '2-digit',
+ })} - ${new Date((endRange as { to: string }).to).toLocaleDateString('en-us', { year: '2-digit', month: '2-digit', day: '2-digit' })}`
 
  return (
   <Card>
@@ -63,11 +72,12 @@ const Content: FC<ContentProps> = () => {
      <Tabs kpiList={kpiList} />
     </div>
    </div>
+   {endInput.length > 0 && <p className='text-center mb-2 mt-4'>{date}</p>}
    <Change
-    data={graphData}
+    data={endGraphData}
+    prevData={startGraphData}
     selectedKpi={selectedKpi}
    />
-   {/* <LineChart {...chartArgs} /> */}
   </Card>
  )
 }
