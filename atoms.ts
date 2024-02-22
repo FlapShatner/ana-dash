@@ -22,3 +22,8 @@ export const startNameAtom = atom('')
 startNameAtom.debugLabel = 'startNameAtom'
 export const endNameAtom = atom('')
 endNameAtom.debugLabel = 'endNameAtom'
+
+export const startRangeDataAtom = atom<dataPointType[]>([])
+startRangeDataAtom.debugLabel = 'startRangeDataAtom'
+export const endRangeDataAtom = atom<dataPointType[]>([])
+endRangeDataAtom.debugLabel = 'endRangeDataAtom'
