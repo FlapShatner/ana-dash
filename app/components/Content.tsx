@@ -6,7 +6,7 @@ import { Card, LineChart } from '@tremor/react'
 import { getFormattedData } from '@/utils'
 import { dateLabel, filterByDateRange } from '@/dateUtils'
 import { useAtom, useAtomValue } from 'jotai'
-import { startInputAtom, endInputAtom, selectedIndexAtom, endRangeAtom } from '@/atoms'
+import { startInputAtom, endInputAtom, selectedIndexAtom, endRangeAtom, startRangeAtom, startRangeDataAtom, endRangeDataAtom } from '@/atoms'
 import { dataObjectType } from '@/types'
 import Change from './change'
 
@@ -16,8 +16,21 @@ const Content: FC<ContentProps> = () => {
  const startInput = useAtomValue(startInputAtom)
  const endInput = useAtomValue(endInputAtom)
  const endRange = useAtomValue(endRangeAtom)
+ const startRange = useAtomValue(startRangeAtom)
+ //  const startRangeData = useAtomValue(startRangeDataAtom)
+ //  const endRangeData = useAtomValue(endRangeDataAtom)
+ const [startRangeData, setStartRangeData] = useAtom(startRangeDataAtom)
+ const [endRangeData, setEndRangeData] = useAtom(endRangeDataAtom)
 
- const startGraphData = startInput.map((item) => {
+ useEffect(() => {
+  if (endInput.length === 0 || startInput.length === 0) return
+  const endRangeData = filterByDateRange(endInput, new Date((endRange as { from: string }).from), new Date((endRange as { to: string }).to))
+  const startRangeData = filterByDateRange(startInput, new Date((startRange as { from: string }).from), new Date((startRange as { to: string }).to))
+  setEndRangeData(endRangeData)
+  setStartRangeData(startRangeData)
+ }, [endRange, startRange, startInput, endInput])
+
+ const startGraphData = startRangeData.map((item) => {
   return {
    Date: dateLabel(item.publishTime),
    Reach: item.reach,
@@ -29,7 +42,7 @@ const Content: FC<ContentProps> = () => {
   }
  })
 
- const endGraphData = endInput.map((item) => {
+ const endGraphData = endRangeData.map((item) => {
   return {
    Date: dateLabel(item.publishTime),
    Reach: item.reach,
@@ -59,11 +72,11 @@ const Content: FC<ContentProps> = () => {
  //   customTooltip: CustomTooltip,
  //  }
 
- const date = ` ${new Date((endRange as { from: string }).from).toLocaleDateString('en-us', {
+ const prevDate = ` ${new Date((startRange as { from: string }).from).toLocaleDateString('en-us', {
   year: '2-digit',
   month: '2-digit',
   day: '2-digit',
- })} - ${new Date((endRange as { to: string }).to).toLocaleDateString('en-us', { year: '2-digit', month: '2-digit', day: '2-digit' })}`
+ })} - ${new Date((startRange as { to: string }).to).toLocaleDateString('en-us', { year: '2-digit', month: '2-digit', day: '2-digit' })}`
 
  return (
   <Card>
@@ -72,12 +85,12 @@ const Content: FC<ContentProps> = () => {
      <Tabs kpiList={kpiList} />
     </div>
    </div>
-   {endInput.length > 0 && <p className='text-center mb-2 mt-4'>{date}</p>}
    <Change
     data={endGraphData}
     prevData={startGraphData}
     selectedKpi={selectedKpi}
    />
+   {/* {startInput.length > 0 && <p> {prevDate}</p>} */}
   </Card>
  )
 }

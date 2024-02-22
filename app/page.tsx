@@ -1,7 +1,7 @@
 'use client'
 import { useAtomsDebugValue } from 'jotai-devtools'
 import Upload from './components/upload'
-import Content from './components/content'
+import Content from './components/Content'
 import Dates from './components/dates'
 
 export default function Home() {
